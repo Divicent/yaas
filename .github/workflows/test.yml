@@ -8,9 +8,11 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  build:
+  test_api:
     runs-on: ubuntu-latest
-
+    defaults:
+      run:
+        working-directory: api
     steps:
     - uses: actions/checkout@v3
     - name: Build

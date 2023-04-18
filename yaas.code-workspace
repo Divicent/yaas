@@ -3,6 +3,10 @@
 		{
 			"name": "api",
 			"path": "api"
+		},
+		{
+			"path": ".",
+			"name": "root"
 		}
 	]
 }
