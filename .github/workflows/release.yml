@@ -30,12 +30,12 @@ jobs:
       run:
         working-directory: api
     steps:
-    - name: install ssh keys
-      run: |
-        install -m 600 -D /dev/null ~/.ssh/id_rsa
-        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-        ssh-keyscan -H ${{ secrets.SSH_HOST }} > ~/.ssh/known_hosts
+    - uses: shimataro/ssh-key-action@v2
+      name: Add SSH key
+      with:
+        key: {%- raw -%}${{ secrets.SSH_PRIVATE_KEY }}
+        known_hosts: ${{ secrets.SSH_HOST }}
+    - name: Adding Known Hosts
+      run: ssh-keyscan -H ${{ secrets.SSH_HOST }}{% endraw%} >> ~/.ssh/known_hosts
     - name: connect and pull
       run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }} && make deploy-api && exit"
-    - name: cleanup
-      run: rm -rf ~/.ssh
