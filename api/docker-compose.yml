@@ -2,5 +2,15 @@ services:
   yaas-api:
     build:
       context: .
+    restart: always
+  nginx:
+    image: nginx:1.13.3-alpine
     ports:
-      - "8080:8000"
+      - "8000:8000"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - /var/cert/privkey.pem:/etc/nginx/ssl/privkey.pem
+      - /var/cert/cert.pem:/etc/nginx/ssl/cert.pem
+    depends_on:
+      - yaas-api
+    restart: always
