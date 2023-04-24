@@ -30,6 +30,7 @@ jobs:
       run:
         working-directory: api
     steps:
+    - uses: actions/checkout@v2
     - uses: shimataro/ssh-key-action@v2
       name: Add SSH key
       with:
