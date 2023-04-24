@@ -1,0 +1,6 @@
+services:
+  yaas-api:
+    build:
+      context: .
+    ports:
+      - "8080:8000"
