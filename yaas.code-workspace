@@ -8,5 +8,11 @@
 			"path": ".",
 			"name": "root"
 		}
-	]
+	],
+	"settings": {
+		"[rust]": {
+				"editor.defaultFormatter": "rust-lang.rust",
+				"editor.formatOnSave": true
+		}
+	}
 }

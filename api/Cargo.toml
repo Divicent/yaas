@@ -11,6 +11,7 @@ serde = { version = "1.0.126", features = ["derive"] }
 jsonwebtoken = "8"
 chrono = "0.4.24"
 dotenvy = "0.15.7"
+serde_json = "1.0.96"
 
 [dependencies.rocket_contrib]
 version = "0.4.10"
