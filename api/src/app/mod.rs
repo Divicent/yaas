@@ -1,5 +1,7 @@
 use rocket::serde::{Serialize};
 
+pub mod auth;
+
 
 #[derive(Serialize)]
 #[serde(crate = "rocket::serde")]
@@ -23,3 +25,4 @@ pub fn get_node_list() -> Vec<Node> {
     Node::new("Node 2".to_string(), "Node 2 description".to_string()),
   ]
 }
+
