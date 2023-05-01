@@ -1,4 +1,3 @@
-
 use jsonwebtoken::errors::Error;
 use rocket::http::Status;
 use rocket::request::{FromRequest, Outcome, Request};
@@ -7,21 +6,14 @@ use rocket::Responder;
 use serde::Deserialize;
 use serde_json;
 
-
 use crate::app::auth::decode_jwt;
 
 #[derive(Responder, Debug)]
 pub enum NetworkResponse {
-    #[response(status = 201)]
-    Created(String),
     #[response(status = 400)]
     BadRequest(String),
     #[response(status = 401)]
     Unauthorized(String),
-    #[response(status = 404)]
-    NotFound(String),
-    #[response(status = 409)]
-    Conflict(String),
 }
 
 #[derive(Serialize)]
@@ -56,72 +48,57 @@ impl<'r> FromRequest<'r> for JWT {
             Ok(decode_jwt(key.to_string())?)
         }
 
+        fn create_response(message: &str) -> Response {
+            Response {
+                body: ResponseBody::Message(message.to_string()),
+            }
+        }
+
+        fn json_to_str(response: Response) -> String {
+            serde_json::to_string(&response).unwrap()
+        }
+
         match req.headers().get_one("authorization") {
             None => {
-                let response = Response {
-                    body: ResponseBody::Message(String::from(
-                        "Error validating JWT token - No token provided",
-                    )),
-                };
+                let response = create_response("Error validating JWT token - No token provided");
 
                 Outcome::Failure((
                     Status::Unauthorized,
-                    NetworkResponse::Unauthorized(serde_json::to_string(&response).unwrap()),
+                    NetworkResponse::Unauthorized(json_to_str(response)),
                 ))
             }
             Some(key) => match is_valid(key) {
                 Ok(claims) => Outcome::Success(JWT { claims }),
                 Err(err) => match &err.kind() {
                     jsonwebtoken::errors::ErrorKind::ExpiredSignature => {
-                        let response = Response {
-                            body: ResponseBody::Message(format!(
-                                "Error validating JWT token - Expired Token"
-                            )),
-                        };
+                        let response =
+                            create_response("Error validating JWT token - Expired Token");
+
                         Outcome::Failure((
                             Status::Unauthorized,
-                            NetworkResponse::Unauthorized(
-                                serde_json::to_string(&response).unwrap(),
-                            ),
+                            NetworkResponse::Unauthorized(json_to_str(response)),
                         ))
                     }
                     jsonwebtoken::errors::ErrorKind::InvalidToken => {
-                        let response = Response {
-                            body: ResponseBody::Message(format!(
-                                "Error validating JWT token - Invalid Token"
-                            )),
-                        };
+                        let response =
+                            create_response("Error validating JWT token - Invalid Token");
 
                         Outcome::Failure((
                             Status::Unauthorized,
-                            NetworkResponse::Unauthorized(
-                                serde_json::to_string(&response).unwrap(),
-                            ),
+                            NetworkResponse::Unauthorized(json_to_str(response)),
                         ))
                     }
                     _ => {
-                        let response = Response {
-                            body: ResponseBody::Message(format!(
-                                "Error validating JWT token - {}",
-                                err
-                            )),
-                        };
+                        let response =
+                            create_response(&format!("Error validating JWT token - {}", err));
 
                         Outcome::Failure((
                             Status::Unauthorized,
-                            NetworkResponse::Unauthorized(
-                                serde_json::to_string(&response).unwrap(),
-                            ),
+                            NetworkResponse::Unauthorized(json_to_str(response)),
                         ))
                     }
                 },
             },
         }
     }
-}
-
-pub struct User {
-    pub id: String,
-    pub user_name: String,
-    pub password: String,
 }

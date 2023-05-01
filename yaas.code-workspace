@@ -11,7 +11,7 @@
 	],
 	"settings": {
 		"[rust]": {
-				"editor.defaultFormatter": "rust-lang.rust",
+				"editor.defaultFormatter": "rust-lang.rust-analyzer",
 				"editor.formatOnSave": true
 		}
 	}
