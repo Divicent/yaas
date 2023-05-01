@@ -1,4 +1,3 @@
-pub mod models;
 use jsonwebtoken::{errors::{Error, ErrorKind}, Header, Algorithm, encode, EncodingKey, decode, DecodingKey, Validation};
 use chrono::Utc;
 use models::Claims;
@@ -33,3 +32,5 @@ fn decode_jwt(token: String) -> Result<Claims, ErrorKind> {
     Err(err) => Err(err.kind().to_owned())
   }
 }
+
+pub mod models;

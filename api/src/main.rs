@@ -52,3 +52,5 @@ fn rocket() -> _ {
 
 mod app;
 mod domain;
+mod models;
+mod repository;

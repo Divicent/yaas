@@ -17,3 +17,8 @@ serde_json = "1.0.96"
 version = "0.4.10"
 default-features = false
 features = ["json"]
+
+[dependencies.mongodb]
+version = "2.5.0"
+default-features = false
+features = ["async-std-runtime"]
