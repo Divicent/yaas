@@ -1,3 +1,5 @@
+pub mod handlers;
+
 use chrono::Utc;
 use jsonwebtoken::{
     decode, encode,
