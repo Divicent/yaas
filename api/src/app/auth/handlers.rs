@@ -1,11 +1,7 @@
 use crate::app::auth::models::{NetworkResponse, Response, ResponseBody};
 use crate::domain::auth::Auth;
 use rocket::serde::json::Json;
-use rocket::{
-    serde::Serialize,
-    serde::{self, Deserialize},
-    State,
-};
+use rocket::{serde::Deserialize, serde::Serialize, State};
 
 #[derive(Serialize, Deserialize)]
 pub struct LoginRequest {

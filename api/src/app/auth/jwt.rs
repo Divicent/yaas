@@ -1,12 +1,10 @@
-pub mod handlers;
-
+use crate::app::auth::models::Claims;
 use chrono::Utc;
 use jsonwebtoken::{
     decode, encode,
     errors::{Error, ErrorKind},
     Algorithm, DecodingKey, EncodingKey, Header, Validation,
 };
-use models::Claims;
 use std::env;
 
 fn get_secret() -> String {
@@ -33,7 +31,7 @@ pub fn create_jwt(id: String) -> Result<String, Error> {
     )
 }
 
-fn decode_jwt(token: String) -> Result<Claims, ErrorKind> {
+pub fn decode_jwt(token: String) -> Result<Claims, ErrorKind> {
     let secret = get_secret();
     let token = token.trim_start_matches("Bearer").trim();
 
@@ -46,5 +44,3 @@ fn decode_jwt(token: String) -> Result<Claims, ErrorKind> {
         Err(err) => Err(err.kind().to_owned()),
     }
 }
-
-pub mod models;

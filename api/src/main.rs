@@ -1,8 +1,6 @@
 #[macro_use]
 extern crate rocket;
 
-mod app;
-mod domain;
 mod models;
 mod repository;
 
@@ -11,6 +9,18 @@ use domain::auth::Auth;
 use dotenvy::dotenv;
 use mongodb::Client;
 use std::env;
+
+mod domain {
+    pub mod auth;
+}
+
+mod app {
+    pub mod auth {
+        pub mod handlers;
+        pub mod jwt;
+        pub mod models;
+    }
+}
 
 #[get("/ping")]
 fn ping() -> &'static str {

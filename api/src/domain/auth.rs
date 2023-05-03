@@ -1,6 +1,5 @@
 use crate::{
-    app::auth::{create_jwt, models::NetworkResponse},
-    models::User,
+    app::auth::jwt::create_jwt, app::auth::models::NetworkResponse, models::User,
     repository::UserRepository,
 };
 use bcrypt;

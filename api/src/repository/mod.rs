@@ -14,7 +14,7 @@ impl UserRepository {
         self.0
             .find_one(doc! { "email": email }, None)
             .await
-            .expect("Faile to find user by email")
+            .expect("Unable to find user by email")
     }
 
     pub async fn create_user(&self, user: User) {

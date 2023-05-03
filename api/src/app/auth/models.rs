@@ -6,7 +6,7 @@ use rocket::Responder;
 use serde::Deserialize;
 use serde_json;
 
-use crate::app::auth::decode_jwt;
+use crate::app::auth::jwt::decode_jwt;
 
 #[derive(Responder, Debug)]
 pub enum NetworkResponse {
