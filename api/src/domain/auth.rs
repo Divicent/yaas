@@ -25,8 +25,11 @@ impl Auth {
             ));
         }
 
-        if user.unwrap().password == password {
-            return Ok(create_jwt("user_id".to_string()).unwrap());
+        let user = user.unwrap();
+
+
+        if user.password == password {
+            return Ok(create_jwt(user.id.unwrap().to_hex()).unwrap());
         } else {
             return Err(NetworkResponse::BadRequest(
                 "Invalid credentials".to_string(),
