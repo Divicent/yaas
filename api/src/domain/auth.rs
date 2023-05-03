@@ -3,6 +3,7 @@ use crate::{
     models::User,
     repository::UserRepository,
 };
+use bcrypt;
 
 pub struct Auth {
     user_repository: UserRepository,
@@ -26,9 +27,16 @@ impl Auth {
         }
 
         let user = user.unwrap();
+        let is_valid_password = match bcrypt::verify(&password, &user.password) {
+            Err(_) => {
+                return Err(NetworkResponse::InternalServerError(
+                    "Failed to login".to_string(),
+                ))
+            }
+            Ok(is_valid) => is_valid,
+        };
 
-
-        if user.password == password {
+        if is_valid_password {
             return Ok(create_jwt(user.id.unwrap().to_hex()).unwrap());
         } else {
             return Err(NetworkResponse::BadRequest(
@@ -50,13 +58,22 @@ impl Auth {
                 "Email already exists".to_string(),
             ));
         }
+
+        let password = match bcrypt::hash(password, 10) {
+            Err(_) => {
+                return Err(NetworkResponse::InternalServerError(
+                    "Failde to create the user".to_string(),
+                ))
+            }
+            Ok(pwd) => pwd,
+        };
+
         let user = User {
             id: None,
             email: email.to_string(),
-            password: password.to_string(),
+            password,
             first_name: first_name.to_string(),
             last_name: last_name.to_string(),
-            password_salt: "".to_string(),
         };
 
         self.user_repository.create_user(user).await;

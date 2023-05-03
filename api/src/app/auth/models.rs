@@ -14,6 +14,8 @@ pub enum NetworkResponse {
     BadRequest(String),
     #[response(status = 401)]
     Unauthorized(String),
+    #[response(status = 500)]
+    InternalServerError(String),
 }
 
 #[derive(Serialize)]

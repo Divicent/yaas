@@ -12,6 +12,7 @@ jsonwebtoken = "8"
 chrono = "0.4.24"
 dotenvy = "0.15.7"
 serde_json = "1.0.96"
+bcrypt = "0.14.0"
 
 [dependencies.rocket_contrib]
 version = "0.4.10"

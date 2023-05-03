@@ -31,7 +31,7 @@ async fn rocket() -> _ {
         Err(_) => panic!("Failed to initialize mongodb client"),
     };
 
-    let db = client.database("auth");
+    let db = client.database("yaas");
 
     let user_repo = repository::UserRepository::new(&db).await;
 
