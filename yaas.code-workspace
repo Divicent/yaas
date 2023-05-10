@@ -5,6 +5,10 @@
 			"path": "api"
 		},
 		{
+			"name": "web-app",
+			"path": "web-app"
+		},
+		{
 			"path": ".",
 			"name": "root"
 		}
