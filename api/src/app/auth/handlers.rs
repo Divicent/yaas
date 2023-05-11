@@ -1,7 +1,9 @@
-use crate::app::auth::models::{NetworkResponse, Response, ResponseBody};
+use crate::app::auth::models::NetworkResponse;
 use crate::domain::auth::Auth;
 use rocket::serde::json::Json;
 use rocket::{serde::Deserialize, serde::Serialize, State};
+
+use super::models::SignInResponse;
 
 #[derive(Serialize, Deserialize)]
 pub struct LoginRequest {
@@ -24,7 +26,7 @@ pub struct SignUpRequest {
 pub async fn sign_in_handler(
     auth: &State<Auth>,
     login_request: Json<LoginRequest>,
-) -> Result<Json<Response>, NetworkResponse> {
+) -> Result<Json<SignInResponse>, NetworkResponse> {
     let token = match auth
         .sign_in(login_request.email.clone(), login_request.password.clone())
         .await
@@ -33,9 +35,7 @@ pub async fn sign_in_handler(
         Err(err) => return Err(err),
     };
 
-    let response = Response {
-        body: ResponseBody::AuthToken(token),
-    };
+    let response = SignInResponse { auth_token: token };
 
     Ok(Json(response))
 }

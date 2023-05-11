@@ -104,3 +104,8 @@ impl<'r> FromRequest<'r> for JWT {
         }
     }
 }
+
+#[derive(Deserialize, Serialize)]
+pub struct SignInResponse {
+    pub auth_token: String,
+}

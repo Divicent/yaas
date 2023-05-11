@@ -1,2 +1,2 @@
 run:
-	(cd api && cargo run) & (cd web-app && yarn dev)
+	npx concurrently --kill-others "cd api && cargo run" "cd web-app && yarn dev"
