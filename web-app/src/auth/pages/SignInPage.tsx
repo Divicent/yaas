@@ -1,19 +1,19 @@
 import { Component, createSignal } from "solid-js"
-import { signIn } from "./auth.service"
+import { signIn } from "../services/auth.service"
+import toast from "solid-toast"
 
 const SignInPage: Component = () => {
   const [email, setEmail] = createSignal("")
-  const [password, setPassword]  = createSignal("")
+  const [password, setPassword] = createSignal("")
 
   async function handleSignIn() {
-    try {
-      const result = await signIn(email(), password())
-      console.log("RESULT", result)
-    } catch (e){
-      // TODO show error message
-      console.log("ERRRO LOGIN", e)
-    }
-  } 
+    await toast.promise(
+      signIn(email(), password()), {
+      loading: "Signing in...",
+      success: null,
+      error: (err) => err.message
+    })
+  }
 
   return (
     <div>
@@ -26,7 +26,7 @@ const SignInPage: Component = () => {
       <input onInput={e => setPassword(e.target.value)} value={password()} />
 
       <button disabled={!email() || !password()} onClick={handleSignIn}>Login</button>
-    </div>  
+    </div>
   )
 }
 
